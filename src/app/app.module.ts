@@ -8,12 +8,14 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DndUploadComponent } from './components/addons/dnd-upload/dnd-upload.component';
 import { FileUploadComponent } from './components/addons/file-upload/file-upload.component';
+import { FooterComponent } from './components/sections/footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DndUploadComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
