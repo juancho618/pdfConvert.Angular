@@ -1,0 +1,9 @@
+<div class="upload row" (click)="file.click()" *ngIf="!currentFile" appDnd (fileChangeEmiter)="onFileChange($event)">
+    <fa-icon class="col-12" icon="upload" size="5x"></fa-icon>
+    <input class="col-12" type="file" #file (change)="onFileChange(file.files[0])" style="display:none;" />
+    
+    <br />
+    <span>
+        Drag Document
+    </span>
+</div>
