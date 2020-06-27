@@ -1,0 +1,30 @@
+<div class="jumbotron">
+    <div class="container">
+        <h6 class="display-3">Herramientas online para amantes de los PDF</h6>
+        <br>
+        <p>
+            Herramientas online y completamente gratuitas para unir PDF, separar PDF, comprimir PDF, convertir
+            documentos
+            Office a PDF, PDF a JPG y JPG a PDF.
+        </p>
+    </div>
+</div>
+
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-3" *ngFor="let item of listTools">
+            <div class="dashboard-card mb-3" *ngIf="item.isVisible == true">
+                <a href="#" class="dashboard-card-item dashboard-card-{{item.color}} card border-0 shadow-lg"
+                    [routerLink]="['upload']" [queryParams]="{ page: item.id }">
+                    <div class="card-body d-flex align-items-end flex-column text-right">
+                        <h4>{{item.title}}</h4>
+                        <p class="w-75">
+                            {{item.description}}
+                        </p>
+                        <fa-icon icon="{{item.icon}}"></fa-icon>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

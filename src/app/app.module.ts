@@ -9,13 +9,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DndUploadComponent } from './components/addons/dnd-upload/dnd-upload.component';
 import { FileUploadComponent } from './components/addons/file-upload/file-upload.component';
 import { FooterComponent } from './components/sections/footer/footer.component';
+import { IndexComponent } from './components/pages/index/index.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DndUploadComponent,
     FileUploadComponent,
-    FooterComponent
+    FooterComponent,
+    IndexComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,7 @@ import { FooterComponent } from './components/sections/footer/footer.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
+export class AppModule {
   constructor(library: FaIconLibrary) {
     library.addIconPacks(fas);
   }
