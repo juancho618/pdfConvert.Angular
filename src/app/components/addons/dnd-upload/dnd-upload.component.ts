@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-dnd-upload',
@@ -7,6 +7,10 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class DndUploadComponent implements OnInit {
   @Output() private selectedFile: EventEmitter<File> = new EventEmitter();
+
+  @ViewChild('file')
+  htmlFile: ElementRef;
+
   public currentFile: File = null;
 
   constructor() { }
@@ -16,22 +20,32 @@ export class DndUploadComponent implements OnInit {
 
   public onFileChange(file: File) {
     console.log('currentfile', file);
-    if (this.fileValidation(file)) {
-      this.currentFile = file;
-      this.selectedFile.emit(file);
-      return;
-    }
+    // if (this.fileValidation(file)) {
+    //   this.currentFile = file;
+    //   this.selectedFile.emit(file);
 
-    console.error('Error');
+    //   this.clearInput();
+
+    //   return;
+    // }
+
+    this.currentFile = file;
+    this.selectedFile.emit(file);
+
+    this.clearInput();
   }
 
-  public removeFile() {
+  removeFile() {
     this.currentFile = null;
     this.selectedFile.emit(null);
   }
 
-  public fileValidation(file: File) {
+  fileValidation(file: File) {
     const isExcelFile = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     return isExcelFile;
+  }
+
+  clearInput() {
+    this.htmlFile.nativeElement.value = '';
   }
 }
