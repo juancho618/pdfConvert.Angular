@@ -31,8 +31,7 @@ export class DndUploadComponent implements OnInit {
   }
 
   public fileValidation(file: File) {
-    let isExcelFile = file.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-
+    const isExcelFile = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     return isExcelFile;
   }
 }
