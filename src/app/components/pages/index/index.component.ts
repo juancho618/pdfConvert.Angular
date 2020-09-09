@@ -38,7 +38,7 @@ export class IndexComponent implements OnInit {
       description: 'Quita la contraseña de los PDF y los desbloquea, así podrás usarlos para lo que quieras.',
       color: 'success--dark',
       icon: 'lock-open',
-      isVisible: false
+      isVisible: true
     },
     {
       id: 'lock-pdf',
@@ -46,7 +46,7 @@ export class IndexComponent implements OnInit {
       description: 'Protege PDF con contraseña. Encripta archivos PDF para evitar accesos no autorizados.',
       color: 'info--dark',
       icon: 'lock',
-      isVisible: false
+      isVisible: true
     },
     {
       id: 'watermark-pdf',
@@ -70,15 +70,15 @@ export class IndexComponent implements OnInit {
       description: 'Con nuestras herramientas podrás convertir un sin fin de formatos de office a PDF.',
       color: 'info',
       icon: 'boxes',
-      isVisible: true
+      isVisible: false
     },
     {
-      id: 'jpg-to-pdf',
-      title: 'JPG a PDF',
+      id: 'img-to-pdf',
+      title: 'Imagen a PDF',
       description: 'Convierte tus imágenes JPG a PDF. Ajusta la orientación y los márgenes.',
       color: 'warning',
       icon: 'images',
-      isVisible: false
+      isVisible: true
     },
     {
       id: 'jpg-to-pdf',
@@ -94,15 +94,7 @@ export class IndexComponent implements OnInit {
       description: 'Convierte páginas web de HTML a PDF. Copia y pega la dirección de la página que quieres convertir a PDF.',
       color: 'blue--dark',
       icon: 'code',
-      isVisible: false
-    },
-    {
-      id: 'jpg-to-pdf',
-      title: 'JPG a PDF',
-      description: 'Convierte fácilmente tus archivos PDF a DOCX de WORD editables.',
-      color: 'pink--dark',
-      icon: 'file-image',
-      isVisible: false
+      isVisible: true
     },
     {
       id: 'pdf-to-word',
@@ -127,6 +119,14 @@ export class IndexComponent implements OnInit {
       color: 'success',
       icon: 'file-excel',
       isVisible: false
+    },
+    {
+      id: 'word-to-pdf',
+      title: 'Word a PDF',
+      description: 'Convierte de manera sencilla tus archivos de WORD a PDF',
+      color: 'blue',
+      icon: 'file-word',
+      isVisible: true
     }
   ];
 

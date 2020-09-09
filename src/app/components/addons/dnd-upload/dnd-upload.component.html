@@ -1,10 +1,60 @@
 <div class="upload row" (click)="file.click()" appDnd (fileChangeEmiter)="onFileChange($event)">
     <fa-icon class="col-12" icon="upload" size="5x"></fa-icon>
-    <input class="col-12" type="file" #file (change)="onFileChange(file.files[0])" style="display:none;" />
-    
+    <input class="col-12" type="file" multiple #file (change)="onFileChange(file.files)" style="display:none;" />
+
     <br />
 
     <span class="col-12 pt-3">
         Please drag a document o click here to import the file
     </span>
+</div>
+
+<div class="col-12">
+    <div class="col-12 mt-3" *ngIf="listUploadedDocument.length > 0">
+        <hr />
+
+        <button type="button" class="btn btn-sm btn-info mb-2" (click)="uploadDocuments()"
+            *ngIf="listUploadedDocument.length >= 1">
+            <fa-icon icon="file-upload"></fa-icon> Upload Documents
+        </button>
+
+        <table style="overflow-x: auto;" class="col-12" mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="Name">
+                <th mat-header-cell *matHeaderCellDef>
+                    Document
+                </th>
+                <td mat-cell *matCellDef="let element"> {{element}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Progress">
+                <th mat-header-cell *matHeaderCellDef>
+                    Progress
+                </th>
+
+                <td mat-cell *matCellDef="let element; let i = index">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar"
+                            [style.width]="listUploadedDocument[i].progress+'%'" aria-valuemin="0" aria-valuemax="100">
+                            {{listUploadedDocument[i].progress}}%
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Actions">
+                <th mat-header-cell *matHeaderCellDef>
+                    Actions
+                </th>
+
+                <td mat-cell *matCellDef="let element; let i = index">
+                    <button (click)="removeFile(i)" class="btn btn-small">
+                        <fa-icon icon="times" style="color:red"></fa-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
 </div>
