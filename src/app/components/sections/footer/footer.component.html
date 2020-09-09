@@ -2,12 +2,19 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-6">
-                © 2020 - dev team
+                © {{currentYear}} - coffee pdf
             </div>
-    
+
             <div class="col-6">
                 <div class="text-right">
-                    fb - tw - in
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <fa-icon [icon]="faFacebook"></fa-icon>
+                        </li>
+                        <li class="list-inline-item">
+                            <fa-icon [icon]="faTwitter"></fa-icon>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

@@ -1,4 +1,9 @@
-import { Component, OnInit, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ElementRef, ViewChild, Input } from '@angular/core';
+import { IUploadService } from 'src/app/services/interfaces/upload.interface';
+import { concat } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import { FileUploadItem } from 'src/app/models/fileUploadItem.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dnd-upload',
@@ -6,42 +11,116 @@ import { Component, OnInit, Output, EventEmitter, ElementRef, ViewChild } from '
   styleUrls: ['./dnd-upload.component.scss']
 })
 export class DndUploadComponent implements OnInit {
-  @Output() private selectedFile: EventEmitter<File> = new EventEmitter();
-
   @ViewChild('file')
   htmlFile: ElementRef;
 
   public currentFile: File = null;
+  public dataSource: MatTableDataSource<string>;
+  public displayedColumns: string[] = ['Name', 'Progress', 'Actions'];
 
-  constructor() { }
+  public listFilesUpload: File[] = []; // Could be deleted
+  public listUploadedDocument: FileUploadItem[] = [];
+
+  public serverFiles = [];
+
+  constructor(
+    private uploadService: IUploadService
+  ) { }
 
   ngOnInit() {
   }
 
-  public onFileChange(file: File) {
-    console.log('currentfile', file);
-    // if (this.fileValidation(file)) {
-    //   this.currentFile = file;
-    //   this.selectedFile.emit(file);
+  uploadDocuments(): void {
+    const resquestListResult = [];
+    const documentUploadQueue = this.listUploadedDocument.map(fileToUpload => {
+      return this.uploadService.uploadFiles(fileToUpload);
+    });
 
-    //   this.clearInput();
+    const observableList = concat(...documentUploadQueue);
 
-    //   return;
-    // }
+    observableList.subscribe((results: any) => {
+      if (typeof (results) === 'object' && results.status === 200) {
+        resquestListResult.push(results);
+        this.serverFiles.push(results.data.name);
+      }
 
-    this.currentFile = file;
-    this.selectedFile.emit(file);
-
-    this.clearInput();
+      if (resquestListResult.length === documentUploadQueue.length) {
+        console.table(this.serverFiles);
+        this.uploadService.mergePdfs(this.serverFiles).subscribe((response) => {
+          console.log(response);
+        });
+      }
+    });
   }
 
-  removeFile() {
-    this.currentFile = null;
-    this.selectedFile.emit(null);
+  public updateDocumentList(): void {
+    const listFileName = Array.from(this.listFilesUpload).map(file => file.name);
+    this.dataSource = new MatTableDataSource(listFileName);
   }
+
+  removeFile(index: number): void {
+    this.listUploadedDocument.splice(index, 1);
+    this.updateDocumentList();
+  }
+
+  public onFileChange(files: File[]) {
+    if (!files) {
+      return;
+    }
+
+    const fileInList = this.listUploadedDocument.filter(file => file.name === files[0].name).length > 0;
+
+    if (fileInList) {
+      Swal.fire({
+        title: 'Error',
+        text: 'The current file is already uploaded in the table',
+        icon: 'warning'
+      });
+
+      return;
+    }
+
+    Array.from(files).map((file: any) => {
+      this.listFilesUpload.push(file);
+    });
+
+    for (let i = 0; i < files.length; i++) {
+      const currentFile = this.listFilesUpload[i];
+
+      if (this.fileValidation(currentFile)) {
+        const isNameInList = this.listUploadedDocument.filter(file => file.name === currentFile.name).length > 0;
+
+        if (!isNameInList) {
+          const currentDateName = this.generateFileName(currentFile.name);
+          this.listUploadedDocument.push(
+            new FileUploadItem(currentFile.name, currentDateName, currentFile.type, currentFile.size.toString(), files[i])
+          );
+        }
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: 'An error ocurred trying to upload files other than pdf',
+          icon: 'warning'
+        });
+
+        return;
+      }
+    }
+
+    this.updateDocumentList();
+  }
+
+  public generateFileName(name: string): string {
+    return `${Date.now()}_${name}`;
+  }
+
+  // removeFile() {
+  //   this.currentFile = null;
+  //   this.selectedFile.emit(null);
+  // }
 
   fileValidation(file: File) {
-    const isExcelFile = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    const isExcelFile = file.type === 'application/pdf';
     return isExcelFile;
   }
 

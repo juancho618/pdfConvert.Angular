@@ -21,6 +21,11 @@ export class FileUploadComponent implements OnInit {
       name: 'office-to-pdf',
       value: 'Convertir OFFICE a PDF',
       description: 'Convierte tus documentos y archivos de Office a PDF con la máxima calidad y exactamente igual que el archivo DOC o DOCX original.'
+    },
+    {
+      name: 'unlock-pdf',
+      value: 'Unlock a PDF',
+      description: 'Unlock any PDF'
     }
   ];
 
